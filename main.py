@@ -10,5 +10,6 @@ googleAuth.LocalWebserverAuth()
 
 drive = GoogleDrive(googleAuth)
 
-file = drive.CreateFile({'title': 'test.webm'})
-file.Upload()
+file1 = drive.CreateFile()
+file1.SetContentFile('test.webm')
+file1.Upload()
