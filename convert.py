@@ -24,6 +24,12 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def isPlaylist(self) -> bool:
         return self.__isPlaylist
 
+    def loadSingle(self):
+        run(f'yt-dlp -o /test.%(ext)s {self.__link} -x')
+
+    def loadList(self):
+        run(f'yt-dlp -o "test_playlist/%(title)s.%(ext)s" {self.__link} -x')
+
     # def __init__(self, link: str, location: str, isPlaylist: bool, playlistName: str):
         # if type(location) is str:
         #     self.__location = location
