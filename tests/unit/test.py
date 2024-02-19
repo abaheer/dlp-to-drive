@@ -17,8 +17,8 @@ def test_download_song():
     test = Convert("https://youtu.be/oz4q-pMuve4?si=RGcd6aiD4_HC6lRg", True)
 
     #downloads single file or downloads playlist into current directory
-    run(f'yt-dlp -o /single_output.%(ext)s {test.link} -x')
-    assert os.path.isfile(os.getcwd() + '/single_output.webm')
+    run(f'yt-dlp -o /test.%(ext)s {test.link} -x')
+    assert os.path.isfile(os.getcwd() + '/test.webm')
 
     #delete file after test
-    os.remove(os.getcwd() + '/single_output.webm')
+    #os.remove(os.getcwd() + '/test.webm')
