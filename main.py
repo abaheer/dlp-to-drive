@@ -4,31 +4,32 @@ from subprocess import getoutput
 import os
 
 import tkinter as tk
+import customtkinter as ctk
 
 
 class ConvertGUI:
 
     def __init__(self):
-        self.root = tk.Tk()
-        self.root.geometry("500x500")
+        self.root = ctk.CTk()
+        self.root.geometry("550x250")
         self.root.title("yt-to-drive")
 
-        self.label = tk.Label(self.root, text="Enter link", font=('sans-serif', 18))
+        self.label = ctk.CTkLabel(self.root, text="ENTER LINK:", font=('Verdana bold', 25))
         self.label.pack(padx=20, pady=20)
 
-        self.entry = tk.Entry(self.root)
+        self.entry = ctk.CTkEntry(self.root, width=500)
         self.entry.pack()
 
-        self.button = tk.Button(self.root, text="continue", font=('sans-serif', 10), command=self.process_input)
-        self.button.pack()
+        self.button = ctk.CTkButton(self.root, text="continue", command=self.process_input)
+        self.button.pack(pady=10)
 
-        self.check_playlist = tk.IntVar()
-        self.checkPlaylist = tk.Checkbutton(self.root, text="Playlist", font=('sans-serif, 10'),
+        self.check_playlist = ctk.IntVar()
+        self.checkPlaylist = ctk.CTkCheckBox(self.root, text="Playlist",
                                             variable=self.check_playlist)
         self.checkPlaylist.pack(padx=10, pady=10)
 
-        self.check_drive = tk.IntVar()
-        self.checkDrive = tk.Checkbutton(self.root, text="Save to drive", font=('sans-serif, 10'),
+        self.check_drive = ctk.IntVar()
+        self.checkDrive = ctk.CTkCheckBox(self.root, text="Save to drive",
                                          variable=self.check_drive)
         self.checkDrive.pack(padx=10)
 
