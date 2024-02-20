@@ -105,14 +105,27 @@ class Convert:  # get all information and user preferences about the file(s) to 
             raise TypeError('Upload failed')
 
     def dr_upload_playlist(self):
-        upload_path = os.path.join(os.getcwd(), self.__filename)
 
-        print("path exists", os.path.exists(upload_path))
+        # create google drive folder
+        folder = self.__drive.CreateFile({'title': self.__filename, 'mimeType': 'application/vnd.google-apps.folder'})
+        folder.Upload()
 
-        if os.path.exists(upload_path) and self.__drive:
-            upload_folder = self.__drive.CreateFile()
-            upload_folder.SetContentFile(upload_path)
-            upload_folder.Upload()
+        folder_list = self.__drive.ListFile({'q': "trashed=false"}).GetList()
+        folder_id = folder_list[0]['id']
+
+        print(folder_id)
+
+        
+
+
+        #upload_path = os.path.join(os.getcwd(), self.__filename)
+        #
+        # print("path exists", os.path.exists(upload_path))
+        #
+        # if os.path.exists(upload_path) and self.__drive:
+        #     upload_folder = self.__drive.CreateFile()
+        #     upload_folder.SetContentFile(upload_path)
+        #     upload_folder.Upload()
 
 
 # def __init__(self, link: str, location: str, isPlaylist: bool, playlistName: str):
