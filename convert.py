@@ -32,7 +32,6 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     @isPlaylist.setter
     def isPlaylist(self, n: bool):
-        print('HELLOOO')
         self.__isPlaylist = n
 
     @property
@@ -118,7 +117,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             upload_path = os.path.join(os.path.join(os.getcwd(), self.__filename), filename)
-            file1 = self.__drive.CreateFile({'parents': [{'id': folder_id + ''}]})
+            file1 = self.__drive.CreateFile({'title': os.path.basename(upload_path), 'parents': [{'id': folder_id + ''}]})
             file1.SetContentFile(upload_path)
             file1.Upload()
 
