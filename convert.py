@@ -125,7 +125,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
         if self.__tempFiles:
             os.rmdir(directory)  # delete empty folder
-            
+
     def dr_upload(self, file1, upload_path):
         try:
             file1.SetContentFile(upload_path)

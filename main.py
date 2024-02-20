@@ -4,6 +4,7 @@ from subprocess import getoutput
 import os
 
 import tkinter as tk
+from tkinter import messagebox
 import customtkinter as ctk
 
 
@@ -56,6 +57,8 @@ class ConvertGUI:
         if self.check_del:
             to_convert.tempFiles = True
         to_convert.download()
+
+        messagebox.showinfo('Process complete', 'Files have been processed!')
 
     def save_to_drive(self):
         return self.check_drive.get() == 1
