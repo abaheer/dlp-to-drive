@@ -84,14 +84,14 @@ class Convert:  # get all information and user preferences about the file(s) to 
             print('not all good', upload_path)
 
 
-        # googleAuth = GoogleAuth()
-        # googleAuth.LocalWebserverAuth()
-        # self.__drive = GoogleDrive(googleAuth)
-        #
-        # if self.isPlaylist:
-        #     self.dr_upload_playlist()
-        # else:
-        #     self.dr_upload_single()
+        googleAuth = GoogleAuth()
+        googleAuth.LocalWebserverAuth()
+        self.__drive = GoogleDrive(googleAuth)
+
+        if self.isPlaylist:
+            self.dr_upload_playlist()
+        else:
+            self.dr_upload_single()
 
 
 
