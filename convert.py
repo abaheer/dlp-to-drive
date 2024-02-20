@@ -4,6 +4,7 @@ from subprocess import getoutput
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
+
 class Convert:  # get all information and user preferences about the file(s) to be converted
     def __init__(self, link: str, isPlaylist: bool = False, toDrive: bool = False, tempFiles: bool = False):
 
@@ -61,7 +62,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     def loadSingle(self):
         self.__filename = getoutput(
-        f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames -x')
+            f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames -x')
 
         print(self.__filename)
         print(type(self.__filename))
@@ -73,7 +74,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     def loadList(self):
         self.__filename = getoutput(
-        f'yt-dlp {self.link} -I 1:1 --skip-download --no-warning --print playlist_title --restrict-filenames')
+            f'yt-dlp {self.link} -I 1:1 --skip-download --no-warning --print playlist_title --restrict-filenames')
 
         print(self.__filename)
 
@@ -102,14 +103,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
         upload_path = os.path.join(os.getcwd(), self.__filename)
         if os.path.exists(upload_path) and self.__drive:
             file1 = self.__drive.CreateFile({'title': self.__filename})
-            file1.SetContentFile(upload_path)
-            file1.Upload()
-        else:
-            raise TypeError('Upload failed')
-
-        if self.__tempFiles:
-            file1.SetContentFile(os.path.join(os.getcwd(), 'README.md'))
-            os.remove(upload_path)
+            self.dr_upload(file1, upload_path)
 
     def dr_upload_playlist(self):
 
@@ -120,21 +114,25 @@ class Convert:  # get all information and user preferences about the file(s) to 
         folder_list = self.__drive.ListFile({'q': "trashed=false"}).GetList()
         folder_id = folder_list[0]['id']
 
-        print(folder_id)
-
-        file = self.__drive.CreateFile({'parents': [{'id': folder_id + ''}]})
-
         # get playlist folder and iterate through all files
         directory = os.fsencode(os.path.join(os.getcwd(), self.__filename))
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             upload_path = os.path.join(os.path.join(os.getcwd(), self.__filename), filename)
-            file1 = self.__drive.CreateFile({'title': os.path.basename(upload_path), 'parents': [{'id': folder_id + ''}]})
-            file1.SetContentFile(upload_path)
-            file1.Upload()
-            if self.__tempFiles:
-                file1.SetContentFile(os.path.join(os.getcwd(), 'README.md'))
-                os.remove(upload_path)  #delete file after uploaded to drive
+            file1 = self.__drive.CreateFile(
+                {'title': os.path.basename(upload_path), 'parents': [{'id': folder_id + ''}]})
+            self.dr_upload(file1, upload_path)
 
         if self.__tempFiles:
-            os.rmdir(directory) #delete empty folder
+            os.rmdir(directory)  # delete empty folder
+            
+    def dr_upload(self, file1, upload_path):
+        try:
+            file1.SetContentFile(upload_path)
+            file1.Upload()
+        finally:
+            file1.content.close()
+        if file1.uploaded:
+            if self.__tempFiles:
+                file1.SetContentFile(os.path.join(os.getcwd(), 'README.md'))
+                os.remove(upload_path)  # delete file after uploaded to drive if specified
