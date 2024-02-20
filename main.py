@@ -14,7 +14,7 @@ class ConvertGUI:
         self.root.geometry("550x250")
         self.root.title("yt-to-drive")
 
-        self.label = ctk.CTkLabel(self.root, text="ENTER LINK:", font=('Verdana bold', 25))
+        self.label = ctk.CTkLabel(self.root, text="ENTER PLAYLIST OR VIDEO LINK:", font=('Verdana bold', 25))
         self.label.pack(padx=20, pady=20)
 
         self.entry = ctk.CTkEntry(self.root, width=500)
