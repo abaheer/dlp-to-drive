@@ -5,7 +5,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 class Convert:  # get all information and user preferences about the file(s) to be converted
-    def __init__(self, link: str, isPlaylist: bool = False, toDrive: bool = False):
+    def __init__(self, link: str, isPlaylist: bool = False, toDrive: bool = False, tempFiles: bool = False):
 
         if type(link) is str:
             self.__link = link
@@ -21,6 +21,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
         self.__drive = None
         self.__filename = ''
         self.__toDrive = toDrive
+        self.__tempFiles = tempFiles
 
     @property
     def link(self) -> str:
@@ -42,6 +43,13 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def toDrive(self, n: bool):
         self.__toDrive = n
 
+    @property
+    def tempFiles(self) -> bool:
+        return self.__tempFiles
+
+    @tempFiles.setter
+    def tempFiles(self, n: bool):
+        self.__tempFiles = n
 
     def download(self):
         if self.isPlaylist:
@@ -98,6 +106,10 @@ class Convert:  # get all information and user preferences about the file(s) to 
             file1.Upload()
         else:
             raise TypeError('Upload failed')
+
+        if self.__tempFiles:
+            file1.SetContentFile(os.path.join(os.getcwd(), 'README.md'))
+            os.remove(upload_path)
 
     def dr_upload_playlist(self):
 

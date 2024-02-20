@@ -11,7 +11,7 @@ class ConvertGUI:
 
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.geometry("550x250")
+        self.root.geometry("550x280")
         self.root.title("yt-to-drive")
 
         self.label = ctk.CTkLabel(self.root, text="ENTER PLAYLIST OR VIDEO LINK:", font=('Verdana bold', 25))
@@ -26,12 +26,17 @@ class ConvertGUI:
         self.check_playlist = ctk.IntVar()
         self.checkPlaylist = ctk.CTkCheckBox(self.root, text="Playlist",
                                             variable=self.check_playlist)
-        self.checkPlaylist.pack(padx=10, pady=10)
+        self.checkPlaylist.pack(pady=10)
 
         self.check_drive = ctk.IntVar()
         self.checkDrive = ctk.CTkCheckBox(self.root, text="Save to drive",
                                          variable=self.check_drive)
         self.checkDrive.pack(padx=10)
+
+        self.check_del = ctk.IntVar()
+        self.checkDel = ctk.CTkCheckBox(self.root, text="Temp files",
+                                         variable=self.check_del)
+        self.checkDel.pack(pady=10)
 
         self.root.mainloop()
 
@@ -47,6 +52,9 @@ class ConvertGUI:
             to_convert.isPlaylist = True
         elif not self.is_playlist():
             print('save single song to local disk')
+
+        if self.check_del:
+            to_convert.tempFiles = True
         to_convert.download()
 
     def save_to_drive(self):
