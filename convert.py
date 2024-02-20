@@ -84,13 +84,15 @@ class Convert:  # get all information and user preferences about the file(s) to 
             self.dr_auth()
 
     def dr_auth(self):
+        settings_path = 'settings.yaml'  # i.e. if settings.yaml is located in the subfolder `settings`
+
         upload_path = os.path.join(os.getcwd(), self.__filename)
         if os.path.exists(upload_path):
             print('exists all good')
         else:
             print('not all good', upload_path)
 
-        googleAuth = GoogleAuth()
+        googleAuth = GoogleAuth(settings_file=settings_path)
         googleAuth.LocalWebserverAuth()
         self.__drive = GoogleDrive(googleAuth)
 
