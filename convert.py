@@ -62,12 +62,12 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     def loadSingle(self):
         self.__filename = getoutput(
-            f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames -x')
+            f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames -x --no-playlist')
 
         print(self.__filename)
         print(type(self.__filename))
 
-        run(f'yt-dlp -o {self.__filename} {self.__link} -x')
+        run(f'yt-dlp -o {self.__filename} {self.__link} -x --no-playlist')
 
         if self.__toDrive:
             self.dr_auth()
