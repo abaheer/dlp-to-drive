@@ -1,6 +1,7 @@
 import os
 from subprocess import run
-
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 
 class Convert:  # get all information and user preferences about the file(s) to be converted
     def __init__(self, link: str, isPlaylist: bool):
@@ -16,6 +17,8 @@ class Convert:  # get all information and user preferences about the file(s) to 
         else:
             raise TypeError("isPlaylist should be a bool")
 
+        self.drive = ''
+
     @property
     def link(self) -> str:
         return self.__link
@@ -30,7 +33,21 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def loadList(self):
         run(f'yt-dlp -o "test_playlist/%(title)s.%(ext)s" {self.__link} -x')
 
-    # def __init__(self, link: str, location: str, isPlaylist: bool, playlistName: str):
+    def dr_auth(self):
+
+        googleAuth = GoogleAuth()
+        googleAuth.LocalWebserverAuth()
+
+        self.drive = GoogleDrive(googleAuth)
+
+    def dr_upload(self):
+            # TODO
+        # file1 = drive.CreateFile()
+        # file1.SetContentFile('test.webm')
+        # file1.Upload()
+
+
+# def __init__(self, link: str, location: str, isPlaylist: bool, playlistName: str):
         # if type(location) is str:
         #     self.__location = location
         # else:
