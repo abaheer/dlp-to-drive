@@ -1,10 +1,11 @@
 import os
 from subprocess import run
+from subprocess import getoutput
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 class Convert:  # get all information and user preferences about the file(s) to be converted
-    def __init__(self, link: str, isPlaylist: bool = False):
+    def __init__(self, link: str, isPlaylist: bool = False, toDrive: bool = False):
 
         if type(link) is str:
             self.__link = link
@@ -17,7 +18,9 @@ class Convert:  # get all information and user preferences about the file(s) to 
         else:
             raise TypeError("isPlaylist should be a bool")
 
-        self.drive = ''
+        self.__drive = None
+        self.__filename = ''
+        self.__toDrive = toDrive
 
     @property
     def link(self) -> str:
@@ -32,6 +35,14 @@ class Convert:  # get all information and user preferences about the file(s) to 
         print('HELLOOO')
         self.__isPlaylist = n
 
+    @property
+    def toDrive(self) -> bool:
+        return self.__toDrive
+
+    @toDrive.setter
+    def toDrive(self, n: bool):
+        self.__toDrive = n
+
 
     def download(self):
         if self.isPlaylist:
@@ -42,24 +53,66 @@ class Convert:  # get all information and user preferences about the file(s) to 
             self.loadSingle()
 
     def loadSingle(self):
-        run(f'yt-dlp -o /%(title)s.%(ext)s {self.__link} -x')
+        self.__filename = getoutput(
+        f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames')
+
+        print(self.__filename)
+        print(type(self.__filename))
+
+        run(f'yt-dlp -o {self.__filename} {self.__link} -x')
+
+        if self.__toDrive:
+            self.dr_auth()
 
     def loadList(self):
+        self.__filename = getoutput(
+        f'yt-dlp {self.link} -I 1:1 --skip-download --no-warning --print playlist_title --restrict-filenames')
+
+        print(self.__filename)
+
         run(f'yt-dlp -o "%(playlist)s/%(title)s.%(ext)s" {self.__link} -x')
 
+        if self.__toDrive:
+            self.dr_auth()
+
+
     def dr_auth(self):
+        upload_path = os.path.join(os.getcwd(), self.__filename)
+        if os.path.exists(upload_path):
+            print('exists all good')
+        else:
+            print('not all good', upload_path)
 
-        googleAuth = GoogleAuth()
-        googleAuth.LocalWebserverAuth()
 
-        self.drive = GoogleDrive(googleAuth)
+        # googleAuth = GoogleAuth()
+        # googleAuth.LocalWebserverAuth()
+        # self.__drive = GoogleDrive(googleAuth)
+        #
+        # if self.isPlaylist:
+        #     self.dr_upload_playlist()
+        # else:
+        #     self.dr_upload_single()
 
-    def dr_upload(self):
-        # TODO
-        pass
-        # file1 = drive.CreateFile()
-        # file1.SetContentFile('test.webm')
-        # file1.Upload()
+
+
+    def dr_upload_single(self):
+        upload_path = os.path.join(os.getcwd(), self.__filename)
+        if os.path.exists(upload_path) and self.__drive:
+            file1 = self.__drive.CreateFile()
+            file1.SetContentFile(upload_path)
+            file1.Upload()
+        else:
+            raise TypeError('Upload failed')
+
+    def dr_upload_playlist(self):
+        upload_path = os.path.join(os.getcwd(), self.__filename)
+
+        print("path exists", os.path.exists(upload_path))
+
+        if os.path.exists(upload_path) and self.__drive:
+            upload_folder = self.__drive.CreateFile()
+            upload_folder.SetContentFile(upload_path)
+            upload_folder.Upload()
 
 
 # def __init__(self, link: str, location: str, isPlaylist: bool, playlistName: str):

@@ -38,20 +38,15 @@ class ConvertGUI:
 
         to_convert = Convert(self.entry.get())
 
+        if self.save_to_drive():
+            to_convert.toDrive = True
+
         if self.is_playlist():
             print('save playlist to local disk')
             to_convert.isPlaylist = True
         elif not self.is_playlist():
             print('save single song to local disk')
         to_convert.download()
-
-        if self.save_to_drive():
-            Convert.drauth()
-            if self.is_playlist():
-                print("save playlist to drive")
-            else:
-                print('save single song to drive')
-
 
     def save_to_drive(self):
         return self.check_drive.get() == 1
