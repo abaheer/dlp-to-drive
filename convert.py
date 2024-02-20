@@ -75,7 +75,6 @@ class Convert:  # get all information and user preferences about the file(s) to 
         if self.__toDrive:
             self.dr_auth()
 
-
     def dr_auth(self):
         upload_path = os.path.join(os.getcwd(), self.__filename)
         if os.path.exists(upload_path):
@@ -92,8 +91,6 @@ class Convert:  # get all information and user preferences about the file(s) to 
             self.dr_upload_playlist()
         else:
             self.dr_upload_single()
-
-
 
     def dr_upload_single(self):
         upload_path = os.path.join(os.getcwd(), self.__filename)
@@ -115,7 +112,16 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
         print(folder_id)
 
-        
+        file = self.__drive.CreateFile({'parents': [{'id': folder_id + ''}]})
+
+        # get playlist folder and iterate through all files
+        directory = os.fsencode(os.path.join(os.getcwd(), self.__filename))
+        for file in os.listdir(directory):
+            filename = os.fsdecode(file)
+            upload_path = os.path.join(os.path.join(os.getcwd(), self.__filename), filename)
+            file1 = self.__drive.CreateFile({'parents': [{'id': folder_id + ''}]})
+            file1.SetContentFile(upload_path)
+            file1.Upload()
 
 
         #upload_path = os.path.join(os.getcwd(), self.__filename)
