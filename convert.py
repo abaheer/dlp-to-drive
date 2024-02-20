@@ -4,7 +4,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 class Convert:  # get all information and user preferences about the file(s) to be converted
-    def __init__(self, link: str, isPlaylist: bool):
+    def __init__(self, link: str, isPlaylist: bool = False):
 
         if type(link) is str:
             self.__link = link
@@ -27,11 +27,25 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def isPlaylist(self) -> bool:
         return self.__isPlaylist
 
+    @isPlaylist.setter
+    def isPlaylist(self, n: bool):
+        print('HELLOOO')
+        self.__isPlaylist = n
+
+
+    def download(self):
+        if self.isPlaylist:
+            print('playlist')
+            self.loadList()
+        else:
+            print('single')
+            self.loadSingle()
+
     def loadSingle(self):
-        run(f'yt-dlp -o /test.%(ext)s {self.__link} -x')
+        run(f'yt-dlp -o /%(title)s.%(ext)s {self.__link} -x')
 
     def loadList(self):
-        run(f'yt-dlp -o "test_playlist/%(title)s.%(ext)s" {self.__link} -x')
+        run(f'yt-dlp -o "%(playlist)s/%(title)s.%(ext)s" {self.__link} -x')
 
     def dr_auth(self):
 
@@ -41,7 +55,8 @@ class Convert:  # get all information and user preferences about the file(s) to 
         self.drive = GoogleDrive(googleAuth)
 
     def dr_upload(self):
-            # TODO
+        # TODO
+        pass
         # file1 = drive.CreateFile()
         # file1.SetContentFile('test.webm')
         # file1.Upload()

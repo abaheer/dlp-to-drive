@@ -19,7 +19,7 @@ class ConvertGUI:
         self.entry = tk.Entry(self.root)
         self.entry.pack()
 
-        self.button = tk.Button(self.root, text="continue", font=('sans-serif', 10), command=self.print_link)
+        self.button = tk.Button(self.root, text="continue", font=('sans-serif', 10), command=self.process_input)
         self.button.pack()
 
         self.check_playlist = tk.IntVar()
@@ -34,21 +34,29 @@ class ConvertGUI:
 
         self.root.mainloop()
 
-    def print_link(self):
+    def process_input(self):
+
+        to_convert = Convert(self.entry.get())
+
+        if self.is_playlist():
+            print('save playlist to local disk')
+            to_convert.isPlaylist = True
+        elif not self.is_playlist():
+            print('save single song to local disk')
+        to_convert.download()
+
         if self.save_to_drive():
             Convert.drauth()
             if self.is_playlist():
                 print("save playlist to drive")
             else:
                 print('save single song to drive')
-        else:
-            if self.is_playlist():
-                print('save playlist song to local disk')
-            if not self.is_playlist():
-                print('save single song to local disk')
+
 
     def save_to_drive(self):
         return self.check_drive.get() == 1
 
     def is_playlist(self):
         return self.check_playlist.get() == 1
+
+ConvertGUI()
