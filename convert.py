@@ -54,7 +54,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     def loadSingle(self):
         self.__filename = getoutput(
-        f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames')
+        f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames -x')
 
         print(self.__filename)
         print(type(self.__filename))
@@ -82,7 +82,6 @@ class Convert:  # get all information and user preferences about the file(s) to 
         else:
             print('not all good', upload_path)
 
-
         googleAuth = GoogleAuth()
         googleAuth.LocalWebserverAuth()
         self.__drive = GoogleDrive(googleAuth)
@@ -95,7 +94,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def dr_upload_single(self):
         upload_path = os.path.join(os.getcwd(), self.__filename)
         if os.path.exists(upload_path) and self.__drive:
-            file1 = self.__drive.CreateFile()
+            file1 = self.__drive.CreateFile({'title': self.__filename})
             file1.SetContentFile(upload_path)
             file1.Upload()
         else:
