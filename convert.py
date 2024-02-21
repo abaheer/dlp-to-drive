@@ -23,6 +23,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
         self.__filename = ''
         self.__toDrive = toDrive
         self.__tempFiles = tempFiles
+        self.__includeIndex = False
 
     @property
     def link(self) -> str:
@@ -52,6 +53,14 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def tempFiles(self, n: bool):
         self.__tempFiles = n
 
+    @property
+    def includeIndex(self) -> bool:
+        return self.__includeIndex
+
+    @includeIndex.setter
+    def includeIndex(self, n: bool):
+        self.__includeIndex = n
+
     def download(self):
         if self.isPlaylist:
             print('playlist')
@@ -78,7 +87,10 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
         print(self.__filename)
 
-        run(f'yt-dlp -o "%(playlist)s/%(title)s.%(ext)s" {self.__link} -x')
+        if self.__includeIndex:
+            run(f'yt-dlp -o "%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" {self.__link} -x')
+        else:
+            run(f'yt-dlp -o "%(playlist)s/%(title)s.%(ext)s" {self.__link} -x')
 
         if self.__toDrive:
             self.dr_auth()
