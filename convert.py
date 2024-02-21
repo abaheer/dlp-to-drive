@@ -148,5 +148,4 @@ class Convert:  # get all information and user preferences about the file(s) to 
             file1.content.close()
         if file1.uploaded:
             if self.__tempFiles:
-                file1.SetContentFile(os.path.join(os.getcwd(), 'README.md'))
                 os.remove(upload_path)  # delete file after uploaded to drive if specified
