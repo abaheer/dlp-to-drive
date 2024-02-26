@@ -41,7 +41,7 @@ class ConvertGUI:
         self.checkDel.grid(row=4, column=1, pady=10)
 
         self.convert_to_opus = ctk.IntVar()
-        self.checkOpus = ctk.CTkCheckBox(self.root, text=".opus", variable=self.convert_to_opus)
+        self.checkOpus = ctk.CTkCheckBox(self.root, text=".wav", variable=self.convert_to_opus)
         self.checkOpus.grid(row=5, column=0, pady=10)
 
         self.root.mainloop()
@@ -67,6 +67,8 @@ class ConvertGUI:
 
         if self.convert_to_opus:
             to_convert.opus = True
+        else:
+            to_convert.opus = False
 
         to_convert.download()
 
