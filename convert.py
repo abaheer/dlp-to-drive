@@ -85,7 +85,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     def loadSingle(self):
 
-        self.__filename = getoutput(f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print title {self.__opus_string}')
+        self.__filename = getoutput(f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print title --no-playlist {self.__opus_string}')
         print(self.__filename)
         run(f'yt-dlp {self.__link} -o "{self.__filename}" -x {self.__opus_string} --no-playlist')
 
