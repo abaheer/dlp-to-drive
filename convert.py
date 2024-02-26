@@ -24,6 +24,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
         self.__toDrive = toDrive
         self.__tempFiles = tempFiles
         self.__includeIndex = False
+        self.__opus = False
 
     @property
     def link(self) -> str:
@@ -61,6 +62,14 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def includeIndex(self, n: bool):
         self.__includeIndex = n
 
+    @property
+    def opus(self) -> bool:
+        return self.__opus
+
+    @opus.setter
+    def opus(self, n: bool):
+        self.__opus = n
+
     def download(self):
         if self.isPlaylist:
             print('playlist')
@@ -70,13 +79,14 @@ class Convert:  # get all information and user preferences about the file(s) to 
             self.loadSingle()
 
     def loadSingle(self):
+
         self.__filename = getoutput(
             f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames -x --no-playlist')
 
         print(self.__filename)
         print(type(self.__filename))
 
-        run(f'yt-dlp -o {self.__filename} {self.__link} -x --no-playlist')
+        run(f'yt-dlp -o {self.__filename} {self.__link} -x --audio-format opus --no-playlist')
 
         if self.__toDrive:
             self.dr_auth()
