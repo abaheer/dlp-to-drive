@@ -24,6 +24,8 @@ class Convert:  # get all information and user preferences about the file(s) to 
         self.__toDrive = toDrive
         self.__tempFiles = tempFiles
         self.__includeIndex = False
+        self.__opus = False
+        self.__opus_string = ''
 
     @property
     def link(self) -> str:
@@ -61,6 +63,18 @@ class Convert:  # get all information and user preferences about the file(s) to 
     def includeIndex(self, n: bool):
         self.__includeIndex = n
 
+    @property
+    def opus(self) -> bool:
+        return self.__opus
+
+    @opus.setter
+    def opus(self, n: bool):
+        self.__opus = n
+        if self.__opus:
+            self.__opus_string = '--audio-format wav'
+        else:
+            self.__opus_string = '--audio-format opus'
+
     def download(self):
         if self.isPlaylist:
             print('playlist')
@@ -70,13 +84,19 @@ class Convert:  # get all information and user preferences about the file(s) to 
             self.loadSingle()
 
     def loadSingle(self):
-        self.__filename = getoutput(
-            f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print filename --restrict-filenames -x --no-playlist')
+
+        self.__filename = getoutput(f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print title --no-playlist {self.__opus_string}')
+        print(self.__filename)
+        run(f'yt-dlp {self.__link} -o "{self.__filename}" -x {self.__opus_string} --no-playlist')
+
+        print(os.listdir(os.getcwd()))
+
+        for file in os.listdir(os.getcwd()):
+            if self.__filename + '.' in file:
+                self.__filename = file
 
         print(self.__filename)
         print(type(self.__filename))
-
-        run(f'yt-dlp -o {self.__filename} {self.__link} -x --no-playlist')
 
         if self.__toDrive:
             self.dr_auth()
@@ -88,9 +108,9 @@ class Convert:  # get all information and user preferences about the file(s) to 
         print(self.__filename)
 
         if self.__includeIndex:
-            run(f'yt-dlp -o "%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" {self.__link} -x')
+            run(f'yt-dlp -o "%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" {self.__link} -x {self.__opus_string}')
         else:
-            run(f'yt-dlp -o "%(playlist)s/%(title)s.%(ext)s" {self.__link} -x')
+            run(f'yt-dlp -o "%(playlist)s/%(title)s.%(ext)s" {self.__link} -x {self.__opus_string}')
 
         if self.__toDrive:
             self.dr_auth()

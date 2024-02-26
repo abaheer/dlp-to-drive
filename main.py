@@ -12,7 +12,7 @@ class ConvertGUI:
 
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.geometry("550x280")
+        self.root.geometry("550x300")
         self.root.title("yt-to-drive")
 
         self.label = ctk.CTkLabel(self.root, text="ENTER PLAYLIST OR VIDEO LINK:", font=('Verdana bold', 25))
@@ -26,19 +26,23 @@ class ConvertGUI:
 
         self.check_playlist = ctk.IntVar()
         self.checkPlaylist = ctk.CTkCheckBox(self.root, text="Playlist", variable=self.check_playlist)
-        self.checkPlaylist.grid(row=3, column=0, columnspan=1, pady=10)
+        self.checkPlaylist.grid(row=3, column=0, pady=10)
 
         self.check_drive = ctk.IntVar()
         self.checkDrive = ctk.CTkCheckBox(self.root, text="Save to drive", variable=self.check_drive)
-        self.checkDrive.grid(row=3, column=1, columnspan=1, pady=10)
-
-        self.check_del = ctk.IntVar()
-        self.checkDel = ctk.CTkCheckBox(self.root, text="Temp files", variable=self.check_del)
-        self.checkDel.grid(row=4, column=1, columnspan=1, pady=10)
+        self.checkDrive.grid(row=3, column=1, pady=10)
 
         self.check_index = ctk.IntVar()
         self.checkIndex = ctk.CTkCheckBox(self.root, text="Include index", variable=self.check_index)
-        self.checkIndex.grid(row=4, column=0, columnspan=1, pady=10)
+        self.checkIndex.grid(row=4, column=0, pady=10)
+
+        self.check_del = ctk.IntVar()
+        self.checkDel = ctk.CTkCheckBox(self.root, text="Temp files", variable=self.check_del)
+        self.checkDel.grid(row=4, column=1, pady=10)
+
+        self.convert_to_opus = ctk.IntVar()
+        self.checkOpus = ctk.CTkCheckBox(self.root, text=".wav", variable=self.convert_to_opus)
+        self.checkOpus.grid(row=5, column=0, pady=10)
 
         self.root.mainloop()
 
@@ -60,6 +64,11 @@ class ConvertGUI:
 
         if self.check_index:
             to_convert.includeIndex = True
+
+        if self.convert_to_opus:
+            to_convert.opus = True
+        else:
+            to_convert.opus = False
 
         to_convert.download()
 
