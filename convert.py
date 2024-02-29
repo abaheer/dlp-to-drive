@@ -3,6 +3,9 @@ from subprocess import run
 from subprocess import getoutput
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
+from yt_dlp import YoutubeDL
+
+from replace_illegal_filename_characters import replace_illegal_filename_characters
 
 
 class Convert:  # get all information and user preferences about the file(s) to be converted
@@ -85,7 +88,8 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     def loadSingle(self):
 
-        self.__filename = getoutput(f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print title --no-playlist {self.__opus_string}')
+        self.__filename = getoutput(f'yt-dlp {self.__link} -I 1:1 --skip-download --no-warning --print title --no-playlist --windows-filenames {self.__opus_string}')
+        self.__filename = replace_illegal_filename_characters(self.__filename)
         print(self.__filename)
         run(f'yt-dlp {self.__link} -o "{self.__filename}" -x {self.__opus_string} --no-playlist')
 
@@ -103,14 +107,16 @@ class Convert:  # get all information and user preferences about the file(s) to 
 
     def loadList(self):
         self.__filename = getoutput(
-            f'yt-dlp {self.link} -I 1:1 --skip-download --no-warning --print playlist_title --restrict-filenames')
+            f'yt-dlp {self.link} -I 1:1 --skip-download --no-warning --print playlist_title --windows-filenames')
+        self.__filename = replace_illegal_filename_characters(self.__filename)
 
-        print(self.__filename)
+        print('print filename:\n', self.__filename)
+        print('done printing filename')
 
         if self.__includeIndex:
-            run(f'yt-dlp -o "%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s" {self.__link} -x {self.__opus_string}')
+            run(f'yt-dlp -o "{self.__filename}/%(playlist_index)s - %(title)s.%(ext)s" {self.__link} -x {self.__opus_string} --windows-filenames')
         else:
-            run(f'yt-dlp -o "%(playlist)s/%(title)s.%(ext)s" {self.__link} -x {self.__opus_string}')
+            run(f'yt-dlp -o "{self.__filename}/%(title)s.%(ext)s" {self.__link} -x {self.__opus_string} --windows-filenames')
 
         if self.__toDrive:
             self.dr_auth()
