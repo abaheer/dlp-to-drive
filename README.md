@@ -1,7 +1,7 @@
 # dlp-to-drive
 
 - A basic GUI for yt-dlp with Google Authentication implementation using PyDrive
-  - Upload files and playlist to Google Drive automatically
+  - Upload files and playlists to Google Drive automatically
   - Automatically delete files after uploaded to Google Drive
   - Store credentials locally to instantly upload to Google Drive
 
@@ -15,13 +15,15 @@
 
 ## How to use
 
-- Install requirements. You will need to have [ffmpeg](https://ffmpeg.org/) and [yt-dlp](https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file) installed and added to PATH or in the same directory as main.py.
+You will need to have [ffmpeg](https://ffmpeg.org/) and [yt-dlp](https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file) installed and added to PATH or in the same directory as main.py.
+
+- Install requirements:
 
 ```
 $ pip install -r requirements.txt
 ```
 
-- Run using
+- Run using:
 
 ```
 $ python main.py
