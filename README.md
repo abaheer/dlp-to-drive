@@ -4,6 +4,7 @@
   - Upload files and playlists to Google Drive automatically
   - Automatically delete files after uploaded to Google Drive
   - Store credentials locally to instantly upload to Google Drive
+  - Support for invalid filename characters (e.g. \*/!?)
 
 ![](gui.jpg)
 
@@ -29,11 +30,11 @@ $ pip install -r requirements.txt
 $ python main.py
 ```
 
-to use Google Drive functionality, you will need to generate a client_secret and client_id and add those to the settings.yaml file. For more information, check the [documentation](https://developers.google.com/people/quickstart/python#set_up_your_environment).
+To use Google Drive functionality, you will need to generate a client_secret and client_id and add those to the settings.yaml file. For more information, check the [documentation](https://developers.google.com/people/quickstart/python#set_up_your_environment).
 
 ## Future scope
 
-- select directory to save files locally
-- select output file format
-- allow user to queue multiple links
-- conduct further testing
+- Select directory to save files locally
+- Select output file format
+- Allow user to queue multiple links
+- Conduct further testing
