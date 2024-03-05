@@ -13,7 +13,7 @@ class ConvertGUI:
     def __init__(self):
         self.root = ctk.CTk()
         self.root.geometry("550x300")
-        self.root.title("yt-to-drive")
+        self.root.title("dlp-to-drive")
 
         self.label = ctk.CTkLabel(self.root, text="ENTER PLAYLIST OR VIDEO LINK:", font=('Verdana bold', 25))
         self.label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)

@@ -1,20 +1,21 @@
-# yt-to-drive
+# dlp-to-drive
 
 - A basic GUI for yt-dlp with Google Authentication implementation using PyDrive
   - Upload files and playlist to Google Drive automatically
-  - Automatically delete files after uploaded to drive
-  - Users only need to authenticate once, after which their login will be stored locally
+  - Automatically delete files after uploaded to Google Drive
+  - Store credentials locally to instantly upload to Google Drive
 
 ![](gui.jpg)
 
-- Playlist: if checked, will download the entire playlist. Otherwise, only a single item from the playlist will be downloaded
-- Include index: if checked, the index in the playlist will be included in the filename (e.g. 1 - Darude-Sandstorm)
-- Save to Drive: if checked, files will be uploaded to Google Drive (after user authenticates)
-- Temp files: if checked, will delete local audio files after they are uploaded to Google Drive
+- **Playlist**: if checked, will download the entire playlist.
+- **Include index**: if checked, the index in the playlist will be included in the filename.
+- **Save to Drive**: if checked, files will be uploaded to linked Google Drive account.
+- **Temp files**: if checked, local audio files are deleted after they are uploaded to Google Drive.
+- **.wav**: Coverts the file to .wav, otherwise it will remain in original format (e.g. opus).
 
 ## How to use
 
-- Install requirements (run cmd as administrator)
+- Install requirements. You will need to have [ffmpeg](https://ffmpeg.org/) and [yt-dlp](https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file) installed and added to PATH or in the same directory as main.py.
 
 ```
 $ pip install -r requirements.txt
@@ -26,18 +27,11 @@ $ pip install -r requirements.txt
 $ python main.py
 ```
 
-## Alternatively, download from executable-file branch.
-
-- Simply run yt-dlp.exe in dist/yt-to-drive
-- Run yt-to-drive.exe in dist/yt-to-drive to open the GUI (you can make a shortcut to this file)
-- You only need to run the yt-dlp once
+to use Google Drive functionality, you will need to generate a client_secret and client_id and add those to the settings.yaml file. For more information, check the [documentation](https://developers.google.com/people/quickstart/python#set_up_your_environment).
 
 ## Future scope
 
-- allow users to:
-
-  - select directory to save files locally
-  - select output file format
-  - allow user to queue multiple links
-
-- conduct further testing.
+- select directory to save files locally
+- select output file format
+- allow user to queue multiple links
+- conduct further testing
