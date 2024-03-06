@@ -76,7 +76,7 @@ class Convert:  # get all information and user preferences about the file(s) to 
         if self.__opus:
             self.__opus_string = '--audio-format wav'
         else:
-            self.__opus_string = '--audio-format opus'
+            self.__opus_string = ''
 
     def download(self):
         if self.isPlaylist:
