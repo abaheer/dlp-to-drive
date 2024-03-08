@@ -34,6 +34,8 @@ To use Google Drive functionality, you will need to generate a client_secret and
 
 ## Future scope
 
+- Use mutithreaded approach to stop window from freezing while running
+- Add progress bar
 - Select directory to save files locally
 - Select output file format
 - Allow user to queue multiple links
